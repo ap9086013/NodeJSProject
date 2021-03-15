@@ -13,9 +13,9 @@ module.exports.signup_Post =async (req, res) => {
 
     } catch (error) {
         //console.log(error);
-        handlerError(error)
+      const newError=  handlerError(error)
         
-        res.status(400).send("error,user not created")
+        res.status(400).json({newError})
     }
 }
 module.exports.login_Get = (req, res) => {
@@ -30,5 +30,29 @@ module.exports.login_Post = (req, res) => {
 
 const handlerError = (e) => {
     let error = { fullName: '', mobileNo: '', email: '', password: '' };
-    console.log(e.message,e.code)
+    console.log("error------>",e)
+    //duplicate error handleing 
+    if (e.code === 11000) {
+        let keyName = Object.keys(e.keyPattern)[0];
+        console.log("keyName---->", keyName)
+
+        error[keyName] = "already registered " + keyName;
+        return error[keyName];
+    }
+
+
+
+  //  let errorMessage;
+
+    //validation error handleing
+    if (e.message.includes("userData validation failed")) {
+       
+        // console.log("------------",Object.values(e.errors))
+        Object.values(e.errors).forEach(({ properties }) => {
+            error[properties.path] = properties.message;
+            //errorMessage = properties.message
+        })
+    }
+    return error;
+   // console.log(e.message,e.code)
 }
