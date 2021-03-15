@@ -1,6 +1,8 @@
-const express = require("express")
+const express = require("express");
+const { result } = require("lodash");
 const routes = express.Router();
 const Blogs = require("../modal/blogs")
+const userData=require("../modal/UserData")
 
 routes.get("/addBlog", (req, res) => {
     // res.send("test routesp")
@@ -69,6 +71,23 @@ routes.post("/saveData", (req, res) => {
         })
     // console.log("---req--", req.body)
     // res.send( req.body)
+})
+
+
+//Add user Data
+routes.post("/userData", (req, res) => {
+    const setUserData = new userData(req.body)
+    setUserData.save()
+        .then((result) => {
+            res.send("Success Full Add Data")
+        })
+        .catch((e) => {
+            console.log("some error-->", e)
+            res.send("Failed")
+    })
+});
+routes.post("/updateuserData", (req, res) => {
+    
 })
 
 

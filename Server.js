@@ -3,14 +3,15 @@ const express = require("express")
 
 const loadash = require('lodash')
 const mongoose = require("mongoose")
-const { Server } = require('tls')
-const blogesRoute=require('./routes/BlogsRouts')
+const blogesRoute = require('./routes/BlogsRouts')
+const authRoutes=require("./routes/AuthRoutes")
 
 const app = express();
 
+app.use(express.json())
 
 const dbURL = "mongodb+srv://dushyant:P6QTCC3qOcHhnqNU@cluster0.vlq53.mongodb.net/TestNode?retryWrites=true&w=majority"
-mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex:true })
     .then((result) => {
     app.listen(3000)
         console.log("sucess connected--->")
@@ -19,7 +20,12 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log("error--->", error)
     })
 app.use(express.urlencoded({ extended: true }))
- app.use(blogesRoute)
+
+//for normall routes
+//app.use(blogesRoute)
+
+//for auths routes
+app.use(authRoutes)
 
 // const server = http.createServer((req, res) => {
 //     console.log("--server--", req.method, "====", req.url)
