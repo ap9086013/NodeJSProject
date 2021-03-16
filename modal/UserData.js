@@ -28,6 +28,19 @@ const userSchema = new schema({
         minLength:[6,"Minimum password length is 6"]
     }
 })
+//login function 
+userSchema.statics.login = async function (email, password) {
+    const user = await this.findOne({ email })
+    if (user) {
+        const auth = await bcrypt.compare(password, user.password);
+        if (auth) {
+            return user;
+
+        }
+        throw Error("Incorrect Password")
+    }
+    throw Error("Incorrect Email")
+}
 
 // userSchema.post("save", function (doc,next) {
 //     console.log("new user created and saved", doc);

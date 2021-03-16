@@ -5,6 +5,7 @@ const loadash = require('lodash')
 const mongoose = require("mongoose")
 const blogesRoute = require('./routes/BlogsRouts')
 const authRoutes=require("./routes/AuthRoutes")
+const { requireAuth } = require('./middleWare/AuthMiddleWare')
 
 const app = express();
 
@@ -25,6 +26,10 @@ app.use(express.urlencoded({ extended: true }))
 //app.use(blogesRoute)
 
 //for auths routes
+app.get("/auttoken", requireAuth, (req, res) => {
+    console.log(req.body)
+    res.send("res")
+})
 app.use(authRoutes)
 
 // const server = http.createServer((req, res) => {
