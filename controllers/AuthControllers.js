@@ -112,7 +112,7 @@ const createToken = (id) => {
 
 
 //forr token check--->
-module.exports.tokenCheck =  requireAuth,  (req, res) => {
+module.exports.tokenCheck =  requireAuth, async (req, res) => {
 
     res.send("is checked")
 }
